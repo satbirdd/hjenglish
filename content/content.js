@@ -65,7 +65,14 @@ function renderPop(selectionInfo, pageHtml) {
   var $anchorNode = selectionInfo.anchorNode;
   var word = selectionInfo.word;
   var offset = $anchorNode.html().indexOf(word) + word.length;
-  var popDivHtml = '<span style="position: relative;"><div class="hj-translation-pop-extention" style="position: absolute; width: 200px; height: 100px; top: -20px;left: 17px;background-color: white;border: 3px solid gray;"><div style="position: relative; width: 0; height: 0; border: 8px solid;border-color: #ffffff gray #ffffff #ffffff;left: -19px;top: 17px;"></div><div class="content">herr</div></div></span>'
+  var popDivHtml =
+  '<span style="position: relative;">\
+    <div class="hj-translation-pop-extention">\
+      <div class="angle"></div>\
+      <div class="content"></div>\
+    </div>\
+  </span>'
+
   var html = $anchorNode.html().substring(0, offset) +
                popDivHtml +
                $anchorNode.html().substring(offset);

@@ -1,0 +1,20 @@
+.hj-translation-pop-extention {
+	position: absolute;
+	width: 200px;
+	height: 100px;
+	top: -20px;
+	left: 17px;
+	background-color: white;
+	border: 3px solid gray;
+	z-index: 888888888888;
+}
+
+.hj-translation-pop-extention .angle {
+	position: relative;
+	width: 0;
+	height: 0;
+	border: 8px solid;
+	border-color: #ffffff gray #ffffff #ffffff;
+	left: -19px;
+	top: 17px;
+}
