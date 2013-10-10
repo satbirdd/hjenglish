@@ -1,0 +1,15 @@
+{
+	"manifest_version": 2,
+	"name": "沪江小D网页取词",
+	"description": "通过在网页上选取，双击英语单词，从沪江小D获得单词资料，并可以加入沪江小D生词本",
+	"version": "0.1.1",
+	"browser_action":  {
+		"default_icon": "xiaoD.png"
+	},
+	"content_scripts": [{
+		"matches": ["http://*/*", "https://*/*"],
+		"exclude_matches": ["http://dict.hjenglish.com/*"],
+		"all_frames": true,
+		"js": ["lib/jquery-1.10.2.min.js", "content/content.js"]
+	}]
+}
