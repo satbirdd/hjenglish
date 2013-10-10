@@ -75,12 +75,29 @@ function renderPop(selectionInfo, pageHtml) {
     $anchorNode.html(html)
   } else {
     var $hjpage = $("<div></div>").append(pageHtml);
-    var $word_title = $hjpage.find(".word_title");
-    var $simple_content = $hjpage.find(".simple_content");
+    var html;
 
-    var word_title_html = "<div>" + $word_title.html() + "</div>";
-    var simple_content_html = "<div>" + $simple_content.html()+ "</div>";
-    var html = word_title_html + simple_content_html;
+    // 判断是否为各种词态校正原型
+    if ($hjpage.find("#panel_regulate").length > 0) {
+      var $word_info = $hjpage.find("#word_info");
+      var word_info_html = "<div>" + $word_info.html() + "</div>";
+
+      var $panel_comment = $hjpage.find("#panel_comment");
+      var panel_comment_html = "<div>" + $panel_comment.html() + "</div>";
+
+      var $panel_regulate = $hjpage.find("#panel_regulate");
+      var panel_regulate_html = "<div>" + $panel_regulate.html() + "</div>";
+
+      html = word_info_html + panel_comment_html + panel_regulate_html
+    } else {
+      var $word_title = $hjpage.find(".word_title");
+      var word_title_html = "<div>" + $word_title.html() + "</div>";
+
+      var $simple_content = $hjpage.find(".simple_content");
+      var simple_content_html = "<div>" + $simple_content.html()+ "</div>";
+
+      html = word_title_html + simple_content_html;
+    }
 
     $(".hj-translation-pop-extention .content").html(html);
   }
