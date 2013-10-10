@@ -66,7 +66,7 @@ function renderPop(selectionInfo, pageHtml) {
   var word = selectionInfo.word;
   var offset = $anchorNode.html().indexOf(word) + word.length;
   var popDivHtml =
-  '<span style="position: relative;">\
+  '<span class="hj-translation-pop-inserter">\
     <div class="hj-translation-pop-extention">\
       <div class="angle"></div>\
       <div class="content"></div>\

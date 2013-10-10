@@ -1,11 +1,16 @@
+.hj-translation-pop-inserter {
+	position: relative;
+	color: #518616;;
+}
+
 .hj-translation-pop-extention {
 	position: absolute;
 	width: 200px;
-	height: 100px;
+	min-height: 100px;
 	top: -20px;
 	left: 17px;
 	background-color: white;
-	border: 3px solid gray;
+	border: 3px solid #518616;
 	z-index: 888888888888;
 }
 
@@ -14,7 +19,7 @@
 	width: 0;
 	height: 0;
 	border: 8px solid;
-	border-color: #ffffff gray #ffffff #ffffff;
+	border-color: #ffffff #518616 #ffffff #ffffff;
 	left: -19px;
 	top: 17px;
 }
