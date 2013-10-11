@@ -5,7 +5,7 @@ function getHjPage(word) {
 };
 
 function render_translation(translate_options) {
-  $("#hj-translation-pop-inserter .hj-translation").html(translate_options);
+  $("#hj-translation-pop-inserter .content").html(translate_options);
 };
 
 function render_net_error() {};

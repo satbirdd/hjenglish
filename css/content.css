@@ -15,8 +15,12 @@
 	z-index: 888888888888;
 }
 
+#hj-translation-pop-inserter .hj-translation .content {
+	padding: 10px 4px;
+}
+
 #hj-translation-pop-inserter .hj-translation .angle {
-	position: relative;
+	position: absolute;
 	width: 0;
 	height: 0;
 	border: 8px solid;
@@ -27,4 +31,5 @@
 
 #hj-translation-pop-inserter .hj-translation h1 {
 	font-size: 16px;
+	padding: 0;
 }
