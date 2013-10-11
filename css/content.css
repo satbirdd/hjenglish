@@ -1,10 +1,10 @@
-.hj-translation-pop-inserter {
+#hj-translation-pop-inserter {
 	position: relative;
 	color: #518616;
 	font-size: 12px;
 }
 
-.hj-translation-pop-extention {
+#hj-translation-pop-inserter .hj-translation {
 	position: absolute;
 	width: 200px;
 	min-height: 100px;
@@ -15,7 +15,7 @@
 	z-index: 888888888888;
 }
 
-.hj-translation-pop-extention .angle {
+#hj-translation-pop-inserter .hj-translation .angle {
 	position: relative;
 	width: 0;
 	height: 0;
@@ -23,4 +23,8 @@
 	border-color: #ffffff #518616 #ffffff #ffffff;
 	left: -19px;
 	top: 17px;
+}
+
+#hj-translation-pop-inserter .hj-translation h1 {
+	font-size: 16px;
 }

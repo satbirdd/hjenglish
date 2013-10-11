@@ -1,75 +1,25 @@
-// var hjenglish_html;
-
-// if (notHjenglish()) {
-//   var iframeHtml ="<iframe id='hjenglish-extension-iframe' src='http://dict.hjenglish.com/w/english' style='display: none;'></iframe>"
-//   $("html body").append(iframeHtml);
-// }
-
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
-    if (request.greeting == "hello") {
-      sendResponse({farewell: "goodbye"});
-      // if (isHjenglisth()) {
-      //   $.ajax({
-      //     type: 'POST',
-      //     dataType:'json',
-      //     url:'/ajax/en/AddMyWord',
-      //     contentType:'application/json;charset=utf-8',
-      //     data: JSON.stringify({word:'hello',comment:'n. 特权；优待；权益v. 给与…特权；特免',langs:11})
-      //   })
-      // }
-    }
-  }
-);
-
-function isHjenglisth() {
-  return $(location).attr('href').indexOf("hjenglish.com/") != -1
+function getHjPage(word) {
+  chrome.runtime.sendMessage({
+    translate: true,
+    word: word })
 };
 
-function notHjenglish() {
-  return !isHjenglisth();
+function render_translation(translate_options) {
+  $("#hj-translation-pop-inserter .hj-translation").html(translate_options);
 };
 
-function getSelectionInfo() {
-  debugger
-  var anchorNode = document.getSelection().anchorNode
-  var $anchorNode = $(anchorNode).parent();
-  // var offset = document.getSelection().anchorOffset;
-  var selectWord = document.getSelection().toString().replace(/\W/g, "");
+function render_net_error() {};
 
-  return {
-    anchorNode: $anchorNode,
-    // offset: offset,
-    word: selectWord
-  }
-};
-
-function isEnglish(word) {
-  return !!word.match(/^[a-zA-Z]+$/)
-};
-
-function getHjPage(word, selectionInfo, callback) {
-  $.ajax("http://dict.hjenglish.com/w/" + word).
-    success(function(data, status, xhr) {
-      var hjenglish_html = data;
-      callback(selectionInfo, hjenglish_html);
-    })
-};
-
-function renderPop(selectionInfo, pageHtml) {
-  // $(".hj-translation-pop-extention").remove();
-
+function renderPop(selectionInfo) {
+  // 插入span relative定位元素
   var $anchorNode = selectionInfo.anchorNode;
   var word = selectionInfo.word;
   var offset = $anchorNode.html().indexOf(word) + word.length;
   var popDivHtml =
-  '<span class="hj-translation-pop-inserter">\
-    <div class="hj-translation-pop-extention">\
+  '<span id="hj-translation-pop-inserter" class="hj-translation-pop-inserter">\
+    <div class="hj-translation">\
       <div class="angle"></div>\
-      <div class="content"></div>\
+      <div class="content">资料查找中...</div>\
     </div>\
   </span>'
 
@@ -77,47 +27,41 @@ function renderPop(selectionInfo, pageHtml) {
                popDivHtml +
                $anchorNode.html().substring(offset);
 
-  if (!pageHtml) {
-    $(".hj-translation-pop-extention").remove();
-    $anchorNode.html(html)
-  } else {
-    var $hjpage = $("<div></div>").append(pageHtml);
-    var html;
+  $(".hj-translation-pop-inserter").remove();
+  $anchorNode.html(html);
+};
 
-    // 判断是否为各种词态校正原型
-    if ($hjpage.find("#panel_regulate").length > 0) {
-      var $word_info = $hjpage.find("#word_info");
-      var word_info_html = "<div>" + $word_info.html() + "</div>";
+function isEnglish(word) {
+  return !!word.match(/^[a-zA-Z]+$/)
+};
 
-      var $panel_comment = $hjpage.find("#panel_comment");
-      var panel_comment_html = "<div>" + $panel_comment.html() + "</div>";
+function getSelectionInfo() {
+  var anchorNode = document.getSelection().anchorNode
+  var $anchorNode = $(anchorNode).parent();
+  var selectWord = document.getSelection().toString().replace(/\W/g, "");
 
-      var $panel_regulate = $hjpage.find("#panel_regulate");
-      var panel_regulate_html = "<div>" + $panel_regulate.html() + "</div>";
-
-      html = word_info_html + panel_comment_html + panel_regulate_html
-    } else {
-      var $word_title = $hjpage.find(".word_title");
-      var word_title_html = "<div>" + $word_title.html() + "</div>";
-
-      var $simple_content = $hjpage.find(".simple_content");
-      var simple_content_html = "<div>" + $simple_content.html()+ "</div>";
-
-      html = word_title_html + simple_content_html;
-    }
-
-    $(".hj-translation-pop-extention .content").html(html);
-  }
-}
+  return {
+    anchorNode: $anchorNode,
+    word: selectWord }
+};
 
 function dealSelecton() {
   var selectionInfo = getSelectionInfo();
   var word = selectionInfo.word;
   if (isEnglish(word)) {
-    renderPop(selectionInfo, null)
-    getHjPage(word, selectionInfo, renderPop);
+    renderPop(selectionInfo);
+    getHjPage(word);
   }
 };
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.finished && request.got) {
+      var translate_options = request.translate_options;
+      render_translation(translate_options)
+    } else if (request.finished) {
+      render_net_error();
+    }
+  })
 
-document.body.addEventListener("dblclick", dealSelecton)
+document.body.addEventListener("dblclick", dealSelecton);

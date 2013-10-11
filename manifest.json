@@ -5,7 +5,14 @@
 	"version": "0.1.1",
 	"browser_action":  {
 		"default_icon": "xiaoD.png"
-	},
+		},
+	"permissions": [
+		 "*://*/*"
+	],
+	"background": {
+		"scripts": ["lib/jquery-1.10.2.min.js", "background/background.js"],
+		"persistent": false
+		},
 	"content_scripts": [{
 		"matches": ["http://*/*", "https://*/*"],
 		"exclude_matches": ["http://dict.hjenglish.com/*"],
