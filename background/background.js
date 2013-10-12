@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener(
 
 function deal_with_and_send(hjenglish_html) {
   var $hjpage = $(hjenglish_html);
+  $hjpage.find("script").remove();
   var html = get_html_from($hjpage);
 
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {

@@ -6,6 +6,13 @@ function getHjPage(word) {
 
 function render_translation(translate_options) {
   $("#hj-translation-pop-inserter .content").html(translate_options);
+  set_pop_disappear();
+};
+
+function set_pop_disappear() {
+  setTimeout(function() {
+    $(".hj-translation-pop-inserter").remove();
+  }, 6000);
 };
 
 function render_net_error() {};
