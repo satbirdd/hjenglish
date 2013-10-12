@@ -6,7 +6,16 @@ function getHjPage(word) {
 
 function render_translation(translate_options) {
   $("#hj-translation-pop-inserter .content").html(translate_options);
-  set_pop_disappear();
+  setTimeout(function() {
+    var images = $("#hj-translation-pop-inserter .content").find("img")
+    for (var i = 0; i < images.length; i ++) {
+      img = images[i];
+      var origin_src = $(img).attr("src");
+      var src = chrome.extension.getURL(origin_src);
+      $(img).attr("src", src);
+    }
+    set_pop_disappear();
+  }, 0)
 };
 
 function set_pop_disappear() {
