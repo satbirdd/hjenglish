@@ -15,6 +15,7 @@
 		},
 	"web_accessible_resources": [
 	    "images/btn_myword_add.gif",
+	    "images/btn_myword_del.gif",
 	    "lib/jquery-1.10.2.min.map",
 	    "app/images/logo_hjdict.gif",
 	    "newDict/images/sent_off.gif",
