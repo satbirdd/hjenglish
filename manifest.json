@@ -13,6 +13,13 @@
 		"scripts": ["lib/jquery-1.10.2.min.js", "background/background.js"],
 		"persistent": false
 		},
+	"web_accessible_resources": [
+	    "images/btn_myword_add.gif",
+	    "lib/jquery-1.10.2.min.map",
+	    "app/images/logo_hjdict.gif",
+	    "newDict/images/sent_off.gif",
+	    "newDict/images/sent_on.gif"
+	],  
 	"content_scripts": [{
 		"matches": ["http://*/*", "https://*/*"],
 		"exclude_matches": ["http://dict.hjenglish.com/*"],
