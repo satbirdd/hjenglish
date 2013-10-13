@@ -1,4 +1,6 @@
+var current_word, timer;
 function getHjPage(word) {
+  current_word = word;
   chrome.runtime.sendMessage({
     translate: true,
     word: word })
@@ -19,7 +21,7 @@ function render_translation(translate_options) {
 };
 
 function set_pop_disappear() {
-  setTimeout(function() {
+  timer = setTimeout(function() {
     $(".hj-translation-pop-inserter").remove();
   }, 6000);
 };
@@ -72,12 +74,29 @@ function dealSelecton() {
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if (request.finished && request.got) {
+    if (request.finished && request.got) { // 获取翻译成功
       var translate_options = request.translate_options;
       render_translation(translate_options)
-    } else if (request.finished) {
+    } else if (request.finished) { // 获取翻译失败
       render_net_error();
+    } else if (request.added) { //添加生词成功
+      $("a.hj-extension-addNewWord").remove();
+      timer = setTimeout(function() {
+        $(".hj-translation-pop-inserter").remove();
+      }, 6000);
     }
   })
 
 document.body.addEventListener("dblclick", dealSelecton);
+
+$(document).on("click", "a.hj-extension-addNewWord", function(event){
+  if (timer) {
+    clearTimeout(timer);
+  }
+  var comment = $("#hj-translation-pop-inserter .content .comment").text().replace(/ +/, " ");
+  chrome.runtime.sendMessage({
+    addNewWord: true,
+    comment: comment,
+    word: current_word
+  })
+})

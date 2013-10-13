@@ -1,12 +1,51 @@
+var request_times, limite_times = 5; // 已请求次数，请求失败次数
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if (request.translate && request.word) {
-      $.ajax("http://dict.hjenglish.com/w/" + request.word).
-        success(function(data, status, xhr) {
-          deal_with_and_send(data);
-        })
+    request_time = 1;
+    if (request.translate && request.word) { // 请求获取翻译
+      get_hj_translaton(request.word)
+    } else if (request.addNewWord && request.word && request.comment) { // 请求添加生词
+      var word = request.word;
+      var comment = request.comment;
+      request_add_new_word(word, comment);
     }
   })
+
+function get_hj_translaton(word) {
+  $.ajax("http://dict.hjenglish.com/w/" + word).
+    success(function(data, status, xhr) {
+      request_time = 1;
+      deal_with_and_send(data);
+    }).
+    error(function(){
+      if (request_time < limite_times) {
+        request_time ++;
+        get_hj_translaton(word);
+      }
+    })
+};
+
+function request_add_new_word(word, comment) {
+  $.ajax({
+    type: 'POST',
+    dataType:'json',
+    url:'http://dict.hjenglish.com/ajax/en/AddMyWord',
+    contentType:'application/json;charset=utf-8',
+    data: JSON.stringify({word: word, comment: comment, langs:11})
+  }).success(function(data, response, xhr){
+    request_time = 1;
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        addedWord: true
+      })
+    });
+  }).error(function(){
+    if (request_time < limite_times) {
+      request_time ++;
+      request_add_new_word(word, comment);
+    }
+  })
+}
 
 function deal_with_and_send(hjenglish_html) {
   var $hjpage = $(hjenglish_html);
@@ -29,7 +68,7 @@ function get_html_from($hjpage) {
     html =  "<div>" +
               $hjpage.find("#word_info").html() +
             "</div>" +
-            "<div>" +
+            "<div class='comment'>" +
               $hjpage.find("#panel_comment").html() +
             "</div>" + 
             "<div>" +
@@ -39,9 +78,9 @@ function get_html_from($hjpage) {
     html =  "<div>" +
               $hjpage.find(".word_title").html() +
             "</div>" +
-            "<div>" +
+            "<div class='comment'>" +
               $hjpage.find(".simple_content").html() +
             "</div>";
   }
-  return html;
+  return html.replace("href=\"javascript:void(0);\" onclick=\"NewAddMyWord();return false;\"", "class=\"hj-extension-addNewWord\" href=\"javascript: void(0);\"");
 }
