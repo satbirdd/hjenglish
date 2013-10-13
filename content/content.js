@@ -79,8 +79,9 @@ chrome.runtime.onMessage.addListener(
       render_translation(translate_options)
     } else if (request.finished) { // 获取翻译失败
       render_net_error();
-    } else if (request.added) { //添加生词成功
-      $("a.hj-extension-addNewWord").remove();
+    } else if (request.addedWord) { //添加生词成功
+      $("a.hj-extension-addNewWord").html("[成功添加到生词本！]");
+      $("a.hj-extension-addNewWord").removeClass(".hj-extension-addNewWord");
       timer = setTimeout(function() {
         $(".hj-translation-pop-inserter").remove();
       }, 6000);

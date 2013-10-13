@@ -23,7 +23,6 @@
 	"content_scripts": [{
 		"matches": ["http://*/*", "https://*/*"],
 		"exclude_matches": ["http://dict.hjenglish.com/*"],
-		"all_frames": true,
 		"css": ["css/content.css"],
 		"js": ["lib/jquery-1.10.2.min.js", "content/content.js"]
 	}]
