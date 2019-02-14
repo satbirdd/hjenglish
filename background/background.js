@@ -76,10 +76,7 @@ function get_html_from($hjpage) {
             "</div>";
   } else {
     html =  "<div>" +
-              $hjpage.find(".word_title").html() +
-            "</div>" +
-            "<div class='comment'>" +
-              $hjpage.find(".simple_content").html() +
+              $hjpage.find(".word-details-pane-header").html() +
             "</div>";
   }
   return html.replace("href=\"javascript:void(0);\" onclick=\"NewAddMyWord();return false;\"", "class=\"hj-extension-addNewWord\" href=\"javascript: void(0);\"");
